@@ -1,0 +1,32 @@
+{
+  "name": "EnerPay - Pago de Recibos CFE con Criptomonedas",
+  "short_name": "EnerPay",
+  "description": "Paga tu recibo de CFE con MXNB stablecoin de forma instantánea y segura",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/enerpaylogo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/enerpaylogo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "utilities", "productivity"],
+  "screenshots": [
+    {
+      "src": "/enerpaylogo.jpg",
+      "sizes": "640x480",
+      "type": "image/jpeg"
+    }
+  ]
+} 

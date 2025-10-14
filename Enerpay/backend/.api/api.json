@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "bitso-trial",
+      "source": "@bitso-trial/v2.0#52jz1sln2wnias",
+      "integrity": "sha512-vGNb3rzYHUvI2Rkgm++67ejwZOoOKCMYuRaHwSV5WKvpvjAXJMkY1hL4yBR8dSh3l5RC0GpJi2kXsOzu0BkegA==",
+      "installerVersion": "6.1.3"
+    }
+  ]
+}

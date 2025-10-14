@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://enerpay.vercel.app/sitemap.xml
+
+# Información de contacto
+# EnerPay - Pago de Recibos CFE con Criptomonedas
+# URL: https://enerpay.vercel.app 

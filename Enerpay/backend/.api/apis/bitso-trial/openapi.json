@@ -1,0 +1,1894 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "SPEI CLABEs API",
+    "description": "The Bitso API allows you to integrate the SPEI features to create CLABEs and get its information. Below you will find details on how the system works, along with examples in common programming languages.",
+    "contact": {
+      "email": "api@bitso.com",
+      "name": "https://bitso.com/api_info",
+      "url": "https://bitso.com/api_info"
+    },
+    "license": {
+      "name": "Propietary",
+      "url": "https://bitso.com/api_info"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://dev.bitso.com/",
+      "description": "Testing environment"
+    },
+    {
+      "url": "https://stage.bitso.com/",
+      "description": "Stage environment"
+    },
+    {
+      "url": "https://sandbox.bitso.com/",
+      "description": "Sandbox environment"
+    },
+    {
+      "url": "https://bitso.com/",
+      "description": "Production environment"
+    }
+  ],
+  "paths": {
+    "/spei/v1/clabes": {
+      "get": {
+        "summary": "List CLABEs.",
+        "description": "Returns all user CLABEs for the authenticated user.",
+        "operationId": "user_clabes",
+        "tags": [
+          "USER CLABES"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "clabe_type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The type of the clabe.",
+              "example": "MAIN"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The status of the clabe.",
+              "example": "ENABLED"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Time window start date with format yyyy-mm-dd.",
+              "example": "2022-03-03"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Time window end date with format yyyy-mm-dd.",
+              "example": "2022-03-03"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Page number.",
+              "example": "1"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Number of entries per page (max 100).",
+              "example": "25"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user CLABEs for the authenticated user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "payload": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "payload"
+                      ],
+                      "example": {
+                        "success": true,
+                        "payload": {}
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "payload": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "clabe": {
+                                "readOnly": true,
+                                "type": "string",
+                                "description": "The associated CLABE of the user"
+                              },
+                              "type": {
+                                "readOnly": true,
+                                "type": "string",
+                                "description": "The type of the CLABE"
+                              },
+                              "status": {
+                                "readOnly": true,
+                                "type": "string",
+                                "description": "The status of the CLABE indicating whether it is enabled or disabled."
+                              },
+                              "created_at": {
+                                "readOnly": true,
+                                "type": "string",
+                                "description": "ISO 8601 timestamp when the CLABE was created"
+                              },
+                              "updated_at": {
+                                "readOnly": true,
+                                "type": "string",
+                                "description": "ISO 8601 timestamp when the CLABE was last updated"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "example": {
+                    "success": true,
+                    "payload": {
+                      "total_items": "2",
+                      "total_pages": "1",
+                      "current_page": "1",
+                      "page_size": "2",
+                      "response": [
+                        {
+                          "clabe": "987654321987654321",
+                          "status": "ENABLED",
+                          "type": "MAIN",
+                          "created_at": "2023-02-23T12:37:42"
+                        },
+                        {
+                          "clabe": "123456789123456789",
+                          "status": "ENABLED",
+                          "type": "ADDITIONAL",
+                          "created_at": "2023-02-23T12:37:42"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Get user clabes bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid start date": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "start_date: date must match with format yyyy-MM-dd"
+                      }
+                    }
+                  },
+                  "invalid end date": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "end_date: date must match with format yyyy-MM-dd"
+                      }
+                    }
+                  },
+                  "invalid clabe type": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "clabe_type: must be any of enum [MAIN, INTERNATIONAL, ADDITIONAL, ADDITIONAL_INTERNATIONAL]"
+                      }
+                    }
+                  },
+                  "invalid status": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "status: must be any of [ENABLED, DISABLED]"
+                      }
+                    }
+                  },
+                  "inverted dates": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "start_date: parameter is after end_date parameter"
+                      }
+                    }
+                  },
+                  "page_size max length": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "size: must be less then or equal to 100"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0201",
+                    "message": "Invalid Nonce or Invalid Credentials"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0357",
+                    "message": "The requested resource is non-existent or does not belong to the user"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0101",
+                    "message": "Unknown Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BitsoApiKeyAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "USER CLABES"
+        ],
+        "summary": "Creates a CLABE.",
+        "description": "Creates a CLABE for the authenticated user.",
+        "operationId": "create_clabe",
+        "responses": {
+          "201": {
+            "description": "Creates a CLABE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "payload": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "payload"
+                      ],
+                      "example": {
+                        "success": true,
+                        "payload": {}
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "payload": {
+                          "type": "object",
+                          "properties": {
+                            "clabe": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The associated CLABE of the user"
+                            },
+                            "type": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The type of the CLABE"
+                            },
+                            "status": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The status of the CLABE indicating whether it is enabled or disabled."
+                            },
+                            "created_at": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "ISO 8601 timestamp when the CLABE was created"
+                            },
+                            "updated_at": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "ISO 8601 timestamp when the CLABE was last updated"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "success": true,
+                  "payload": {
+                    "clabe": "710969000000048671",
+                    "type": "ADDITIONAL",
+                    "status": "ENABLED",
+                    "created_at": "2023-06-14T12:37:42",
+                    "updated_at": "2023-08-18T12:59:49"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0201",
+                    "message": "Invalid Nonce or Invalid Credentials"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "examples": {
+                  "not onboarded user for additional CLABEs": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "1401",
+                        "message": "The specified user is not onboarded for additional CLABEs"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0101",
+                    "message": "Unknown Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BitsoApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/spei/v1/clabes/{clabe}": {
+      "get": {
+        "tags": [
+          "USER CLABES"
+        ],
+        "summary": "Get CLABE details",
+        "description": "Returns the CLABE resource if it exists for the authenticated user.",
+        "operationId": "get_clabe_details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clabe",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The associated clabe of the user",
+              "example": "710969004400412340"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CLABE details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "payload": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "payload"
+                      ],
+                      "example": {
+                        "success": true,
+                        "payload": {}
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "payload": {
+                          "type": "object",
+                          "properties": {
+                            "clabe": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The associated CLABE of the user"
+                            },
+                            "type": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The type of the CLABE"
+                            },
+                            "status": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The status of the CLABE indicating whether it is enabled or disabled."
+                            },
+                            "created_at": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "ISO 8601 timestamp when the CLABE was created"
+                            },
+                            "updated_at": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "ISO 8601 timestamp when the CLABE was last updated"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "example": {
+                    "success": true,
+                    "payload": {
+                      "clabe": "710969004400412340",
+                      "type": "ADDITIONAL",
+                      "status": "ENABLED",
+                      "created_at": "2023-03-14T20:54:19"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0201",
+                    "message": "Invalid Nonce or Invalid Credentials"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0357",
+                    "message": "The requested resource is non-existent or does not belong to the user"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0101",
+                    "message": "Unknown Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BitsoApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/spei/v1/clabes/{clabe}/status": {
+      "put": {
+        "tags": [
+          "USER CLABES"
+        ],
+        "summary": "Enables or disables a CLABE.",
+        "description": "Enables or disables a CLABE of the authenticated user.",
+        "operationId": "update_clabe_status",
+        "requestBody": {
+          "description": "Update an existent CLABE belonging to a User",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "ENABLED",
+                      "DISABLED"
+                    ],
+                    "description": "The status to set the CLABE to."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clabe",
+            "description": "The clabe to be updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a CLABE.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "payload": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "payload"
+                      ],
+                      "example": {
+                        "success": true,
+                        "payload": {}
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "payload": {
+                          "type": "object",
+                          "properties": {
+                            "clabe": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The associated CLABE of the user"
+                            },
+                            "type": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The type of the CLABE"
+                            },
+                            "status": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "The status of the CLABE indicating whether it is enabled or disabled."
+                            },
+                            "created_at": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "ISO 8601 timestamp when the CLABE was created"
+                            },
+                            "updated_at": {
+                              "readOnly": true,
+                              "type": "string",
+                              "description": "ISO 8601 timestamp when the CLABE was last updated"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "success": true,
+                  "payload": {
+                    "clabe": "710969000000048671",
+                    "type": "ADDITIONAL",
+                    "status": "ENABLED",
+                    "created_at": "2023-06-14T12:37:42",
+                    "updated_at": "2023-08-18T12:59:49"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "examples": {
+                  "attempt to update a MAIN clabe": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "clabe: It is not possible to update the status of a MAIN clabe"
+                      }
+                    }
+                  },
+                  "attempt to update an INTERNATIONAL clabe": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "clabe: It is not possible to update the status of a INTERNATIONAL clabe"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0201",
+                    "message": "Invalid Nonce or Invalid Credentials"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "examples": {
+                  "not onboarded user for additional CLABEs": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "1401",
+                        "message": "The specified user is not onboarded for additional CLABEs"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0101",
+                    "message": "Unknown Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BitsoApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/spei/v1/deposits": {
+      "get": {
+        "summary": "Get paged deposits",
+        "description": "Returns a paginated SPEI Deposits according to the query parameters.",
+        "operationId": "user_clabe_deposit",
+        "tags": [
+          "USER CLABES"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "receiver_clabe",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The associated clabe of the user receiving the deposit.",
+              "example": 44050004402768824
+            }
+          },
+          {
+            "in": "query",
+            "name": "sender_clabe",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The clabe associated with the sender of the deposit.",
+              "example": "710969000929247689"
+            }
+          },
+          {
+            "in": "query",
+            "name": "clabe_type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The type of the receiver CLABE",
+              "example": "MAIN"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deposit_status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The status of the deposit",
+              "example": "complete"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The start date of the desired period for filtering deposits.",
+              "example": "2023-05-30"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The end date of the desired period for filtering deposits.",
+              "example": "2023-05-31"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "The number of elements per page in the paginated response.",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "The page number of the paginated response.",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page of CLABE deposits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "payload": {
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "payload"
+                      ],
+                      "example": {
+                        "success": true,
+                        "payload": {}
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "payload": {
+                          "type": "object",
+                          "properties": {
+                            "page": {
+                              "type": "object",
+                              "properties": {
+                                "totalPages": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "pageNumber": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "pageSize": {
+                                  "type": "integer",
+                                  "example": 10
+                                },
+                                "totalElements": {
+                                  "type": "string",
+                                  "example": "2"
+                                }
+                              }
+                            },
+                            "response": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "deposit_id": {
+                                    "type": "string",
+                                    "description": "The deposit’s ID provided by Bitso."
+                                  },
+                                  "sender_clabe": {
+                                    "type": "string",
+                                    "description": "The CLABE that sent the deposit."
+                                  },
+                                  "receiver_clabe": {
+                                    "type": "string",
+                                    "description": "The CLABE that received the deposit."
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "description": "The deposit’s standing."
+                                  },
+                                  "amount": {
+                                    "type": "string",
+                                    "description": "The deposit amount."
+                                  },
+                                  "currency": {
+                                    "type": "string",
+                                    "description": "The currency ticker of the deposit."
+                                  },
+                                  "details": {
+                                    "type": "object",
+                                    "properties": {
+                                      "sender_name": {
+                                        "type": "string",
+                                        "description": "Name of the financial institution that sent the deposit."
+                                      },
+                                      "sender_bank": {
+                                        "type": "string",
+                                        "description": "Code of the financial institution that sent the deposit."
+                                      },
+                                      "clave": {
+                                        "type": "string",
+                                        "description": "The deposit’s ID supplied by the PRAXIS provider."
+                                      },
+                                      "clave_rastreo": {
+                                        "type": "string",
+                                        "description": "The deposit’s ID assigned by BANXICO."
+                                      },
+                                      "numeric_reference": {
+                                        "type": "string",
+                                        "description": "An identification number the sender provides that can be used to filter transactions—for example, a date."
+                                      },
+                                      "concepto": {
+                                        "type": "string",
+                                        "description": "An alpha-numeric description of the deposit."
+                                      },
+                                      "cep_link": {
+                                        "type": "string",
+                                        "description": "The link to download the transaction receipt generated by BANXICO."
+                                      }
+                                    }
+                                  },
+                                  "created_at": {
+                                    "type": "string",
+                                    "description": "The date when the system created the deposit."
+                                  },
+                                  "updated_at": {
+                                    "type": "string",
+                                    "description": "The last date when the system updated the deposit."
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "example": {
+                    "success": true,
+                    "payload": {
+                      "total_elements": "2",
+                      "total_pages": "1",
+                      "page_size": "10",
+                      "current_page": "1",
+                      "content": [
+                        {
+                          "deposit_id": "1",
+                          "sender_clabe": "444050004402768821",
+                          "receiver_clabe": "036700000536041621",
+                          "status": "complete",
+                          "amount": "100.00",
+                          "currency": "mxn",
+                          "details": {
+                            "sender_name": "JOHN DOE",
+                            "sender_bank": "40150",
+                            "clave": "885436",
+                            "clave_rastreo": "20230484523356OS0V0000487558439",
+                            "numeric_reference": "3067855",
+                            "concepto": "PRUEBA 2",
+                            "cep_link": ""
+                          },
+                          "created_at": "2023-06-29T17:01:43",
+                          "updated_at": "2023-06-30T17:01:43"
+                        },
+                        {
+                          "deposit_id": "2",
+                          "sender_clabe": "885050004402768654",
+                          "receiver_clabe": "036700000536041621",
+                          "status": "failed",
+                          "amount": "200.00",
+                          "currency": "mxn",
+                          "details": {
+                            "sender_name": "JANE DOE",
+                            "sender_bank": "40230",
+                            "clave": "995436",
+                            "clave_rastreo": "20230522523356OS0V0000487554344",
+                            "numeric_reference": "3220855",
+                            "concepto": "PRUEBA 2",
+                            "cep_link": ""
+                          },
+                          "created_at": "2023-06-15T17:01:43",
+                          "updated_at": "2023-06-17T17:01:43"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Get paged deposits bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "examples": {
+                  "invalid start date": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "start_date: date must match with format yyyy-MM-dd"
+                      }
+                    }
+                  },
+                  "invalid end date": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "end_date: date must match with format yyyy-MM-dd"
+                      }
+                    }
+                  },
+                  "invalid clabe type": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "clabe_type: must be any of enum [MAIN, INTERNATIONAL, ADDITIONAL, ADDITIONAL_INTERNATIONAL]"
+                      }
+                    }
+                  },
+                  "invalid deposit status": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "deposit_status: must be any of enum [no_status, pending, complete, failed, verify, in_progress]"
+                      }
+                    }
+                  },
+                  "inverted dates": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "start_date: parameter is after end_date parameter"
+                      }
+                    }
+                  },
+                  "page_size max length": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "size: must be less then or equal to 100"
+                      }
+                    }
+                  },
+                  "invalid page_size value": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "size: Invalid parameter value, please validate your request"
+                      }
+                    }
+                  },
+                  "invalid page value": {
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "0304",
+                        "message": "page: Invalid parameter value, please validate your request"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0201",
+                    "message": "Invalid Nonce or Invalid Credentials"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "error"
+                  ],
+                  "example": {
+                    "success": false,
+                    "error": {
+                      "code": "ERROR_CODE",
+                      "message": "ERROR_MESSAGE"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "0101",
+                    "message": "Unknown Error"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BitsoApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Success": {
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "payload": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "success",
+          "payload"
+        ],
+        "example": {
+          "success": true,
+          "payload": {}
+        }
+      },
+      "Failure": {
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "error"
+        ],
+        "example": {
+          "success": false,
+          "error": {
+            "code": "ERROR_CODE",
+            "message": "ERROR_MESSAGE"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              },
+              "required": [
+                "success",
+                "error"
+              ],
+              "example": {
+                "success": false,
+                "error": {
+                  "code": "ERROR_CODE",
+                  "message": "ERROR_MESSAGE"
+                }
+              }
+            },
+            "example": {
+              "success": false,
+              "error": {
+                "code": "0303",
+                "message": "Required field missing"
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ]
+                }
+              },
+              "required": [
+                "success",
+                "error"
+              ],
+              "example": {
+                "success": false,
+                "error": {
+                  "code": "ERROR_CODE",
+                  "message": "ERROR_MESSAGE"
+                }
+              }
+            },
+            "example": {
+              "success": false,
+              "error": {
+                "code": "0201",
+                "message": "Invalid Nonce or Invalid Credentials"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BitsoApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  }
+}

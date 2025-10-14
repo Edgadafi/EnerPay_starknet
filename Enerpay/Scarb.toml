@@ -1,0 +1,8 @@
+[package]
+name = "enerpay"
+version = "0.1.0"
+edition = "2023_12"
+
+[dependencies]
+starknet = ">=2.3.0"
+
